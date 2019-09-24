@@ -1,10 +1,12 @@
 // @flow
+/* eslint-disable react/sort-comp */
 import React, { Component, Fragment, type Node } from 'react';
 import ReactDOM from 'react-dom';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
+import { colors } from '@atlaskit/theme';
 import { DragDropContext, Droppable, Draggable } from '../../../src';
 import reorder from '../reorder';
-import { colors, grid } from '../constants';
+import { grid } from '../constants';
 import type { Quote } from '../types';
 import type {
   DropResult,
@@ -13,27 +15,27 @@ import type {
   DraggableStateSnapshot,
 } from '../../../src';
 
-const Table = styled('table')`
+const Table = styled.table`
   width: 500px;
   margin: 0 auto;
   table-layout: ${props => props.layout};
 `;
 
-const TBody = styled('tbody')`
+const TBody = styled.tbody`
   border: 0;
 `;
 
-const THead = styled('thead')`
+const THead = styled.thead`
   border: 0;
   border-bottom: none;
-  background-color: ${colors.grey.light};
+  background-color: ${colors.N20};
 `;
 
-const Row = styled('tr')`
-  ${props => (props.isDragging ? `background: ${colors.green};` : '')};
+const Row = styled.tr`
+  ${props => (props.isDragging ? `background: ${colors.G50};` : '')};
 `;
 
-const Cell = styled('td')`
+const Cell = styled.td`
   box-sizing: border-box;
   padding: ${grid}px;
 `;
@@ -57,7 +59,6 @@ type SnapshotMap = {
 const snapshotMap: SnapshotMap = {};
 
 class TableCell extends React.Component<TableCellProps> {
-  // eslint-disable-next-line react/sort-comp
   ref: ?HTMLElement;
 
   componentDidMount() {
@@ -163,7 +164,7 @@ class TableCell extends React.Component<TableCellProps> {
   };
 
   render() {
-    return <Cell innerRef={this.setRef}>{this.props.children}</Cell>;
+    return <Cell ref={this.setRef}>{this.props.children}</Cell>;
   }
 }
 
@@ -181,6 +182,8 @@ Object.assign(table.style, {
   margin: '0',
   padding: '0',
   border: '0',
+  height: '0',
+  width: '0',
 });
 const tbody: HTMLElement = document.createElement('tbody');
 table.appendChild(tbody);
@@ -199,7 +202,7 @@ class TableRow extends Component<TableRowProps> {
       <IsDraggingContext.Consumer>
         {(isDragging: boolean) => (
           <Row
-            innerRef={provided.innerRef}
+            ref={provided.innerRef}
             isDragging={snapshot.isDragging}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
@@ -232,7 +235,7 @@ class TableRow extends Component<TableRowProps> {
 }
 
 // TODO: make this look nicer!
-const Header = styled('header')`
+const Header = styled.header`
   display: flex;
   flex-direction: column;
   width: 500px;
@@ -241,9 +244,9 @@ const Header = styled('header')`
 `;
 
 /* stylelint-disable block-no-empty */
-const LayoutControl = styled('div')``;
+const LayoutControl = styled.div``;
 
-const CopyTableButton = styled('button')``;
+const CopyTableButton = styled.button``;
 /* stylelint-enable */
 
 type AppProps = {|
@@ -363,7 +366,7 @@ export default class TableApp extends Component<AppProps, AppState> {
               <Droppable droppableId="table">
                 {(droppableProvided: DroppableProvided) => (
                   <TBody
-                    innerRef={(ref: ?HTMLElement) => {
+                    ref={(ref: ?HTMLElement) => {
                       this.tableRef = ref;
                       droppableProvided.innerRef(ref);
                     }}
@@ -387,6 +390,7 @@ export default class TableApp extends Component<AppProps, AppState> {
                         )}
                       </Draggable>
                     ))}
+                    {droppableProvided.placeholder}
                   </TBody>
                 )}
               </Droppable>

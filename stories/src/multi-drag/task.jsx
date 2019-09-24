@@ -1,8 +1,9 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
+import { colors } from '@atlaskit/theme';
 import { Draggable } from '../../../src';
-import { grid, colors, borderRadius } from '../constants';
+import { grid, borderRadius } from '../constants';
 import type { DraggableProvided, DraggableStateSnapshot } from '../../../src';
 import type { Id, Task as TaskType } from '../types';
 
@@ -31,14 +32,14 @@ const getBackgroundColor = ({
   isGhosting,
 }: GetBackgroundColorArgs): string => {
   if (isGhosting) {
-    return colors.grey.light;
+    return colors.N10;
   }
 
   if (isSelected) {
-    return colors.blue.light;
+    return colors.B50;
   }
 
-  return colors.grey.light;
+  return colors.N10;
 };
 
 const getColor = ({ isSelected, isGhosting }): string => {
@@ -46,23 +47,21 @@ const getColor = ({ isSelected, isGhosting }): string => {
     return 'darkgrey';
   }
   if (isSelected) {
-    return colors.blue.deep;
+    return colors.B200;
   }
-  return colors.black;
+  return colors.N900;
 };
 
-const Container = styled('div')`
+const Container = styled.div`
   background-color: ${props => getBackgroundColor(props)};
   color: ${props => getColor(props)};
   padding: ${grid}px;
   margin-bottom: ${grid}px;
   border-radius: ${borderRadius}px;
   font-size: 18px;
-  border: 1px solid ${colors.shadow};
+  border: 1px solid ${colors.N90};
   ${props =>
-    props.isDragging
-      ? `box-shadow: 2px 2px 1px ${colors.shadow};`
-      : ''} ${props =>
+    props.isDragging ? `box-shadow: 2px 2px 1px ${colors.N90};` : ''} ${props =>
     props.isGhosting
       ? 'opacity: 0.8;'
       : ''}
@@ -73,19 +72,19 @@ const Container = styled('div')`
   /* avoid default outline which looks lame with the position: absolute; */
   &:focus {
     outline: none;
-    border-color: ${colors.blue.deep};
+    border-color: ${colors.N200};
   }
 `;
 /* stylelint-disable block-no-empty */
-const Content = styled('div')``;
+const Content = styled.div``;
 /* stylelint-enable */
 const size: number = 30;
 
-const SelectionCount = styled('div')`
+const SelectionCount = styled.div`
   right: -${grid}px;
   top: -${grid}px;
-  color: ${colors.white};
-  background: ${colors.blue.deep};
+  color: ${colors.N0};
+  background: ${colors.N200};
   border-radius: 50%;
   height: ${size}px;
   width: ${size}px;
@@ -162,8 +161,8 @@ export default class Task extends Component<Props> {
 
   // Determines if the platform specific toggle selection in group key was used
   wasToggleInSelectionGroupKeyUsed = (event: MouseEvent | KeyboardEvent) => {
-    const isUsingWindows = navigator.platform.indexOf('Win') >= 0;
-    return isUsingWindows ? event.ctrlKey : event.metaKey;
+    const isUsingMac = navigator.platform.toUpperCase().indexOf('MAC') > -1;
+    return isUsingMac ? event.metaKey : event.ctrlKey;
   };
 
   // Determines if the multiSelect key was used
@@ -204,7 +203,7 @@ export default class Task extends Component<Props> {
 
           return (
             <Container
-              innerRef={provided.innerRef}
+              ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
               onClick={this.onClick}

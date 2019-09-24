@@ -1,10 +1,11 @@
 // @flow
 import React, { Component, type Node } from 'react';
 import ReactDOM from 'react-dom';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
+import { colors } from '@atlaskit/theme';
 import { DragDropContext, Droppable, Draggable } from '../../../src';
 import reorder from '../reorder';
-import { grid, colors } from '../constants';
+import { grid } from '../constants';
 import type { Quote } from '../types';
 import type {
   DropResult,
@@ -28,11 +29,11 @@ if (!document.body) {
 
 document.body.appendChild(portal);
 
-const SimpleQuote = styled('div')`
+const SimpleQuote = styled.div`
   padding: ${grid}px;
   margin-bottom: ${grid}px;
-  background-color: ${colors.blue.light};
-  border: 1px solid ${colors.blue.deep};
+  background-color: ${colors.B50};
+  border: 1px solid ${colors.B200};
 
   /* used for positioning the after content */
   position: relative;
@@ -64,7 +65,7 @@ class PortalAwareItem extends Component<ItemProps> {
 
     const child: Node = (
       <SimpleQuote
-        innerRef={provided.innerRef}
+        ref={provided.innerRef}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
         inPortal={usePortal}
@@ -90,7 +91,7 @@ type AppState = {|
   quotes: Quote[],
 |};
 
-const Container = styled('div')`
+const Container = styled.div`
   margin: 0 auto;
   width: 300px;
 `;
@@ -131,7 +132,7 @@ export default class PortalApp extends Component<AppProps, AppState> {
         <Droppable droppableId="droppable">
           {(droppableProvided: DroppableProvided) => (
             <Container
-              innerRef={droppableProvided.innerRef}
+              ref={droppableProvided.innerRef}
               {...droppableProvided.droppableProps}
             >
               {this.state.quotes.map((quote: Quote, index: number) => (
@@ -148,6 +149,7 @@ export default class PortalApp extends Component<AppProps, AppState> {
                   )}
                 </Draggable>
               ))}
+              {droppableProvided.placeholder}
             </Container>
           )}
         </Droppable>

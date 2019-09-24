@@ -1,10 +1,11 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
+import { colors } from '@atlaskit/theme';
 import { Droppable, Draggable } from '../../../src';
 import QuoteItem from '../primatives/quote-item';
 import Title from '../primatives/title';
-import { grid, colors } from '../constants';
+import { grid } from '../constants';
 import type { Quote } from '../types';
 import type { NestedQuoteList } from './types';
 import type {
@@ -14,13 +15,13 @@ import type {
   DraggableStateSnapshot,
 } from '../../../src';
 
-const Root = styled('div')`
+const Root = styled.div`
   width: 250px;
 `;
 
-const Container = styled('div')`
+const Container = styled.div`
   background-color: ${({ isDraggingOver }) =>
-    isDraggingOver ? colors.blue.lighter : colors.blue.light};
+    isDraggingOver ? colors.B50 : colors.B75};
   display: flex;
   flex-direction: column;
   padding: ${grid}px;
@@ -29,7 +30,7 @@ const Container = styled('div')`
   transition: background-color 0.1s ease;
 
   &:focus {
-    outline: 2px solid ${colors.purple};
+    outline: 2px solid ${colors.P200};
     outline-offset: 2px;
   }
 `;
@@ -59,7 +60,7 @@ export default class QuoteList extends Component<{ list: NestedQuoteList }> {
         dropSnapshot: DroppableStateSnapshot,
       ) => (
         <Container
-          innerRef={dropProvided.innerRef}
+          ref={dropProvided.innerRef}
           isDraggingOver={dropSnapshot.isDraggingOver}
           {...dropProvided.droppableProps}
         >
@@ -74,7 +75,7 @@ export default class QuoteList extends Component<{ list: NestedQuoteList }> {
                   dragSnapshot: DraggableStateSnapshot,
                 ) => (
                   <NestedContainer
-                    innerRef={dragProvided.innerRef}
+                    ref={dragProvided.innerRef}
                     isDragging={dragSnapshot.isDragging}
                     {...dragProvided.draggableProps}
                     {...dragProvided.dragHandleProps}

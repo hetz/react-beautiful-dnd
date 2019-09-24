@@ -1,24 +1,17 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'react-emotion';
-import { action } from '@storybook/addon-actions';
+import styled from '@emotion/styled';
+import { colors } from '@atlaskit/theme';
 import { DragDropContext } from '../../../src';
 import QuoteList from '../primatives/quote-list';
-import { colors, grid } from '../constants';
+import { grid } from '../constants';
 import { reorderQuoteMap } from '../reorder';
 import type { ReorderQuoteMapResult } from '../reorder';
 import type { QuoteMap } from '../types';
-import type {
-  DropResult,
-  DragStart,
-  DraggableLocation,
-} from '../../../src/types';
+import type { DropResult, DraggableLocation } from '../../../src/types';
 
-const publishOnDragStart = action('onDragStart');
-const publishOnDragEnd = action('onDragEnd');
-
-const Root = styled('div')`
-  background-color: ${colors.blue.deep};
+const Root = styled.div`
+  background-color: ${colors.B200};
   box-sizing: border-box;
   padding: ${grid * 2}px;
   min-height: 100vh;
@@ -29,11 +22,11 @@ const Root = styled('div')`
   align-items: flex-start;
 `;
 
-const Column = styled('div')`
+const Column = styled.div`
   margin: 0 ${grid * 2}px;
 `;
 
-const HorizontalScrollContainer = styled('div')`
+const HorizontalScrollContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -43,7 +36,7 @@ const HorizontalScrollContainer = styled('div')`
   overflow: auto;
 `;
 
-const VerticalScrollContainer = styled('div')`
+const VerticalScrollContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -54,7 +47,7 @@ const VerticalScrollContainer = styled('div')`
   overflow: auto;
 `;
 
-const PushDown = styled('div')`
+const PushDown = styled.div`
   height: 200px;
 `;
 
@@ -71,16 +64,7 @@ export default class QuoteApp extends Component<Props, State> {
     quoteMap: this.props.initial,
   };
 
-  onDragStart = (initial: DragStart) => {
-    publishOnDragStart(initial);
-    // this.setState({
-    //   disabledDroppable: this.getDisabledDroppable(initial.source.droppableId),
-    // });
-  };
-
   onDragEnd = (result: DropResult) => {
-    publishOnDragEnd(result);
-
     // dropped nowhere
     if (!result.destination) {
       return;
@@ -116,10 +100,7 @@ export default class QuoteApp extends Component<Props, State> {
     const disabledDroppable = 'TODO';
 
     return (
-      <DragDropContext
-        onDragStart={this.onDragStart}
-        onDragEnd={this.onDragEnd}
-      >
+      <DragDropContext onDragEnd={this.onDragEnd}>
         <Root>
           <HorizontalScrollContainer>
             <Column>

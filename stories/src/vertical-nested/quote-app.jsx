@@ -1,16 +1,16 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import invariant from 'tiny-invariant';
-import { action } from '@storybook/addon-actions';
+import { colors } from '@atlaskit/theme';
 import { DragDropContext } from '../../../src';
-import { colors, grid } from '../constants';
+import { grid } from '../constants';
 import QuoteList from './quote-list';
 import reorder from '../reorder';
 import { getQuotes } from '../data';
 import type { Quote } from '../types';
 import type { NestedQuoteList } from './types';
-import type { DropResult, DragStart } from '../../../src/types';
+import type { DropResult } from '../../../src/types';
 
 const quotes: Quote[] = getQuotes(10);
 
@@ -28,11 +28,8 @@ const initialList: NestedQuoteList = {
   ],
 };
 
-const publishOnDragStart = action('onDragStart');
-const publishOnDragEnd = action('onDragEnd');
-
-const Root = styled('div')`
-  background-color: ${colors.blue.deep};
+const Root = styled.div`
+  background-color: ${colors.B200};
   box-sizing: border-box;
   padding: ${grid * 2}px;
   min-height: 100vh;
@@ -54,13 +51,7 @@ export default class QuoteApp extends Component<*, State> {
   };
   /* eslint-enable */
 
-  onDragStart = (initial: DragStart) => {
-    publishOnDragStart(initial);
-  };
-
   onDragEnd = (result: DropResult) => {
-    publishOnDragEnd(result);
-
     // dropped outside the list
     if (!result.destination) {
       return;
@@ -121,10 +112,7 @@ export default class QuoteApp extends Component<*, State> {
     const { list } = this.state;
 
     return (
-      <DragDropContext
-        onDragStart={this.onDragStart}
-        onDragEnd={this.onDragEnd}
-      >
+      <DragDropContext onDragEnd={this.onDragEnd}>
         <Root>
           <QuoteList list={list} />
         </Root>

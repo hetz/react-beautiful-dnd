@@ -1,9 +1,10 @@
 // @flow
 import React, { type Node } from 'react';
 import ReactDOM from 'react-dom';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
+import { colors } from '@atlaskit/theme';
 import type { Quote } from '../types';
-import { colors, grid } from '../constants';
+import { grid } from '../constants';
 import { getQuotes } from '../data';
 import QuoteItem from '../primatives/quote-item';
 import {
@@ -18,17 +19,17 @@ import {
 
 const sidebarWidth: number = 300;
 
-const Title = styled('h2')`
+const Title = styled.h2`
   text-align: center;
   padding-top: ${grid * 3}px;
   margin-bottom: ${grid * 3}px;
 `;
 
-const SidebarContainer = styled('div')`
+const SidebarContainer = styled.div`
   width: ${sidebarWidth}px;
   height: 100vh;
   overflow: auto;
-  background-color: ${colors.blue.light};
+  background-color: ${colors.B50};
   position: fixed;
 `;
 
@@ -87,11 +88,11 @@ class Sidebar extends React.Component<ListProps> {
   }
 }
 
-const ContentContainer = styled('div')`
+const ContentContainer = styled.div`
   margin-left: ${sidebarWidth}px;
 `;
 
-const ContentList = styled('div')`
+const ContentList = styled.div`
   width: ${sidebarWidth}px;
   margin: 0 auto;
 `;
@@ -106,7 +107,7 @@ class Content extends React.Component<ListProps> {
           {(droppableProvided: DroppableProvided) => (
             <ContentList
               {...droppableProvided.droppableProps}
-              innerRef={droppableProvided.innerRef}
+              ref={droppableProvided.innerRef}
             >
               {this.props.quotes.map((quote: Quote, index: number) => (
                 <Draggable draggableId={quote.id} index={index} key={quote.id}>

@@ -3,7 +3,7 @@
     [
       "stylelint-processor-styled-components",
       {
-        "moduleName": "react-emotion"
+        "moduleName": "@emotion/styled"
       }
     ]
   ],

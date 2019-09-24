@@ -1,21 +1,21 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'react-emotion';
-import { colors, grid } from '../constants';
+import styled from '@emotion/styled';
+import { colors } from '@atlaskit/theme';
+import { grid } from '../constants';
 import type { DraggableProvided, DraggableStateSnapshot } from '../../../src';
 import type { Author } from '../types';
 
-const Avatar = styled('img')`
+const Avatar = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 50%;
   margin-right: ${grid}px;
-  border-color: ${({ isDragging }) =>
-    isDragging ? colors.green : colors.white};
+  border-color: ${({ isDragging }) => (isDragging ? colors.G50 : colors.N0)};
   border-style: solid;
   border-width: ${grid}px;
   box-shadow: ${({ isDragging }) =>
-    isDragging ? `2px 2px 1px ${colors.shadow}` : 'none'};
+    isDragging ? `2px 2px 1px ${colors.N200}` : 'none'};
 
   &:focus {
     /* disable standard focus color */
@@ -23,7 +23,7 @@ const Avatar = styled('img')`
 
     /* use our own awesome one */
     border-color: ${({ isDragging }) =>
-      isDragging ? colors.green : colors.blue.deep};
+      isDragging ? colors.G50 : colors.B200};
   }
 `;
 
@@ -41,7 +41,7 @@ export default class AuthorItem extends Component<Props> {
 
     return (
       <Avatar
-        innerRef={ref => provided.innerRef(ref)}
+        ref={ref => provided.innerRef(ref)}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
         src={author.avatarUrl}

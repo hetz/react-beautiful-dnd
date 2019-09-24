@@ -1,15 +1,35 @@
 import React from 'react';
-import { configure } from '@storybook/react';
+import { addParameters, configure, addDecorator } from '@storybook/react';
+import { create } from '@storybook/theming';
+import GlobalStylesDecorator from './decorator/global-styles';
 // adding css reset - storybook includes a css loader
 import '@atlaskit/css-reset';
+import { colors } from '@atlaskit/theme';
+import logo from './compressed-logo-rbd.svg';
 import { version } from '../package.json';
 
-// dynamically load in all the stories in the /stories directory
-// https://github.com/storybooks/storybook/issues/125#issuecomment-212404756
-const req = require.context('../stories/', true, /story\.js$/);
+const theme = create({
+  brandImage: logo,
+  brandName: 'react-beautiful-dnd',
+  brandUrl: 'https://github.com/atlassian/react-beautiful-dnd',
+});
+
+addParameters({
+  options: {
+    // currently not using any addons
+    showPanel: false,
+    theme,
+  },
+});
+
+// Using theme would be good for this, but it looks like theme is just for the chrome around the story
+addDecorator(GlobalStylesDecorator);
+
+// automatically import all files ending in *.stories.js
+const req = require.context('../stories/', true, /.stories.js$/);
 
 function loadStories() {
-  req.keys().forEach(req);
+  req.keys().forEach(filename => req(filename));
 }
 
 configure(loadStories, module);

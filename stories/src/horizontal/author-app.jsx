@@ -1,12 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
+import { colors } from '@atlaskit/theme';
 import { DragDropContext } from '../../../src';
 import type { DropResult } from '../../../src';
 import type { Quote } from '../types';
 import AuthorList from '../primatives/author-list';
 import reorder from '../reorder';
-import { colors, grid } from '../constants';
+import { grid } from '../constants';
 
 type Props = {|
   initial: Quote[],
@@ -18,9 +19,9 @@ type State = {|
   quotes: Quote[],
 |};
 
-const Root = styled('div')`
+const Root = styled.div`
   padding: ${grid}px;
-  background: ${colors.blue.light};
+  background: ${colors.B50};
 `;
 
 export default class AuthorApp extends Component<Props, State> {

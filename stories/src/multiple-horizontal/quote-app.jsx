@@ -1,20 +1,17 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'react-emotion';
-import { action } from '@storybook/addon-actions';
+import styled from '@emotion/styled';
+import { colors } from '@atlaskit/theme';
 import { DragDropContext } from '../../../src';
 import AuthorList from '../primatives/author-list';
-import { colors, grid } from '../constants';
+import { grid } from '../constants';
 import { reorderQuoteMap } from '../reorder';
 import type { ReorderQuoteMapResult } from '../reorder';
 import type { QuoteMap } from '../types';
-import type { DropResult, DragStart } from '../../../src/types';
+import type { DropResult } from '../../../src/types';
 
-const publishOnDragStart = action('onDragStart');
-const publishOnDragEnd = action('onDragEnd');
-
-const Root = styled('div')`
-  background-color: ${colors.blue.deep};
+const Root = styled.div`
+  background-color: ${colors.B200};
   box-sizing: border-box;
   padding: ${grid * 2}px;
   min-height: 100vh;
@@ -37,13 +34,7 @@ export default class QuoteApp extends Component<Props, State> {
     quoteMap: this.props.initial,
   };
 
-  onDragStart = (initial: DragStart) => {
-    publishOnDragStart(initial);
-  };
-
   onDragEnd = (result: DropResult) => {
-    publishOnDragEnd(result);
-
     // // dropped outside the list
     if (!result.destination) {
       return;
@@ -62,10 +53,7 @@ export default class QuoteApp extends Component<Props, State> {
     const { quoteMap } = this.state;
 
     return (
-      <DragDropContext
-        onDragStart={this.onDragStart}
-        onDragEnd={this.onDragEnd}
-      >
+      <DragDropContext onDragEnd={this.onDragEnd}>
         <Root>
           {Object.keys(quoteMap).map((key: string) => (
             <AuthorList

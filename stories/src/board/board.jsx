@@ -1,27 +1,27 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'react-emotion';
-import { injectGlobal } from 'emotion';
-import Column from './column';
-import { colors } from '../constants';
-import reorder, { reorderQuoteMap } from '../reorder';
-import { DragDropContext, Droppable } from '../../../src';
+import styled from '@emotion/styled';
+import { Global, css } from '@emotion/core';
+import { colors } from '@atlaskit/theme';
 import type {
   DropResult,
   DraggableLocation,
   DroppableProvided,
 } from '../../../src';
 import type { QuoteMap, Quote } from '../types';
+import Column from './column';
+import reorder, { reorderQuoteMap } from '../reorder';
+import { DragDropContext, Droppable } from '../../../src';
 
-const ParentContainer = styled('div')`
+const ParentContainer = styled.div`
   height: ${({ height }) => height};
   overflow-x: hidden;
   overflow-y: auto;
 `;
 
-const Container = styled('div')`
+const Container = styled.div`
+  background-color: ${colors.B100};
   min-height: 100vh;
-
   /* like display:flex but will allow bleeding over the window width */
   min-width: 100vw;
   display: inline-flex;
@@ -51,17 +51,6 @@ export default class Board extends Component<Props, State> {
   };
 
   boardRef: ?HTMLElement;
-
-  componentDidMount() {
-    /* stylelint-disable max-empty-lines */
-    // eslint-disable-next-line no-unused-expressions
-    injectGlobal`
-      body {
-        background: ${colors.blue.deep};
-      }
-    `;
-    /* stylelint-enable */
-  }
 
   onDragEnd = (result: DropResult) => {
     if (result.combine) {
@@ -139,7 +128,7 @@ export default class Board extends Component<Props, State> {
         isCombineEnabled={this.props.isCombineEnabled}
       >
         {(provided: DroppableProvided) => (
-          <Container innerRef={provided.innerRef} {...provided.droppableProps}>
+          <Container ref={provided.innerRef} {...provided.droppableProps}>
             {ordered.map((key: string, index: number) => (
               <Column
                 key={key}
@@ -150,19 +139,29 @@ export default class Board extends Component<Props, State> {
                 isCombineEnabled={this.props.isCombineEnabled}
               />
             ))}
+            {provided.placeholder}
           </Container>
         )}
       </Droppable>
     );
 
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
-        {containerHeight ? (
-          <ParentContainer height={containerHeight}>{board}</ParentContainer>
-        ) : (
-          board
-        )}
-      </DragDropContext>
+      <React.Fragment>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          {containerHeight ? (
+            <ParentContainer height={containerHeight}>{board}</ParentContainer>
+          ) : (
+            board
+          )}
+        </DragDropContext>
+        <Global
+          styles={css`
+            body {
+              background: ${colors.B200};
+            }
+          `}
+        />
+      </React.Fragment>
     );
   }
 }

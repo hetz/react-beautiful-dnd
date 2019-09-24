@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { grid } from '../constants';
 import reorder from '../reorder';
 import {
@@ -24,7 +24,7 @@ type TaskItemProps = {|
   index: number,
 |};
 
-const Canvas = styled('div')`
+const Canvas = styled.div`
   padding: ${grid}px;
   background: lightgrey;
   margin-bottom: ${grid}px;
@@ -51,7 +51,7 @@ class TaskItem extends React.Component<TaskItemProps> {
       <Draggable draggableId={task.id} index={this.props.index}>
         {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
           <Canvas
-            innerRef={provided.innerRef}
+            ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             style={getStyle(provided.draggableProps.style, snapshot)}
@@ -64,19 +64,16 @@ class TaskItem extends React.Component<TaskItemProps> {
   }
 }
 
-const List = styled('div')`
+const List = styled.div`
   font-size: 16px;
   line-height: 1.5;
   width: 200px;
   margin: ${grid}px;
 `;
-const initial: Task[] = Array.from(
-  { length: 10 },
-  (v, k): Task => ({
-    id: `task-${k}`,
-    content: `Task ${k}`,
-  }),
-);
+const initial: Task[] = Array.from({ length: 10 }, (v, k): Task => ({
+  id: `task-${k}`,
+  content: `Task ${k}`,
+}));
 
 type State = {|
   tasks: Task[],
@@ -104,7 +101,7 @@ export default class App extends React.Component<*, State> {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided: DroppableProvided) => (
-            <List innerRef={provided.innerRef} {...provided.droppableProps}>
+            <List ref={provided.innerRef} {...provided.droppableProps}>
               {this.state.tasks.map((task: Task, index: number) => (
                 <TaskItem task={task} index={index} key={task.id} />
               ))}

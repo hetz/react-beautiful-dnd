@@ -1,11 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import TaskList from './task-list';
 import initial from './data';
 import reorder from '../reorder';
 import { grid } from '../constants';
 import { DragDropContext } from '../../../src';
+import BlurContext from './blur-context';
 import type {
   Announce,
   DragStart,
@@ -21,28 +22,25 @@ type State = {|
   blur: number,
 |};
 
-const Container = styled('div')`
+const Container = styled.div`
   padding-top: 20vh;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-const Blur = styled('div')`
-  filter: blur(${props => props.amount}px);
-`;
 
-const BlurControls = styled('div')`
+const BlurControls = styled.div`
   display: flex;
   align-items: center;
   font-size: 20px;
   margin-top: 20vh;
 `;
 
-const BlurTitle = styled('h4')`
+const BlurTitle = styled.h4`
   margin: 0;
 `;
 
-const Button = styled('button')`
+const Button = styled.button`
   height: ${grid * 5}px;
   width: ${grid * 5}px;
   font-size: 20px;
@@ -126,9 +124,9 @@ export default class TaskApp extends Component<*, State> {
         onDragEnd={this.onDragEnd}
       >
         <Container>
-          <Blur amount={this.state.blur}>
+          <BlurContext.Provider value={this.state.blur}>
             <TaskList title="Todo" tasks={this.state.tasks} />
-          </Blur>
+          </BlurContext.Provider>
           <BlurControls>
             <Button
               aria-label="remove blur"
